@@ -50,18 +50,22 @@ namespace BackendWebApi.Services
             }  
         }
 
-        public string insertProduct( Product prod)
+        public Response insertProduct( Product prod)
         {
-          string result = String.Empty;
+            var result = new Response ();
             try
             {
                 using (IDbConnection db = Connection)
                 {
                     db.Open();
-                    var product= db.Query<Product>("sp_insertProduct", new {Name= prod.Name, Price =prod.Price }, commandType: CommandType.StoredProcedure);
-                    if(product != null)
+                    var response= db.Query<Product>("sp_insertProduct", new {Name= prod.Name, Price =prod.Price }, commandType: CommandType.StoredProcedure).ToList();
+                    if (response.FirstOrDefault().Id !=null && response.FirstOrDefault().Name != null)
                     {
-                        result = "1";
+                        result = new Response()
+                        {
+                            Name = response.FirstOrDefault().Name,
+                            Mensaje = "Correcto"
+                        };
                     }
                     db.Close();
 
@@ -71,7 +75,7 @@ namespace BackendWebApi.Services
             catch (Exception ex)
             {
                 string error = ex.Message;
-                return error;
+                return result;
             }
         }
 
