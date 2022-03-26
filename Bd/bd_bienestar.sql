@@ -12,3 +12,130 @@ CREATE TABLE tbl_Product(
 	PRIMARY KEY(Id)
 )
 go
+
+--Procedimiento almacenado lista de productos
+CREATE PROCEDURE sp_getProducts
+AS
+BEGIN
+	DECLARE
+		@msg VARCHAR(300) = ''
+	
+	BEGIN TRY
+
+	SELECT *FROM tbl_Product;
+
+	END TRY
+	BEGIN CATCH
+		IF(LEN(@msg) = 0)
+			BEGIN
+				SET @msg = (SELECT SUBSTRING(ERROR_MESSAGE(), 1, 300))
+			END
+		RAISERROR(@msg, 16, 1)
+	END CATCH
+END
+go
+
+--Procedimiento almacenado lista detalle de un producto
+CREATE PROCEDURE sp_getProduct(
+	@idProduct INT = 0
+)
+AS
+BEGIN
+	DECLARE
+		@msg VARCHAR(300) = ''
+	
+	BEGIN TRY
+	
+	SELECT *FROM tbl_Product WHERE Id=@idProduct;
+
+	END TRY
+	BEGIN CATCH
+		IF(LEN(@msg) = 0)
+			BEGIN
+				SET @msg = (SELECT SUBSTRING(ERROR_MESSAGE(), 1, 300))
+			END
+		RAISERROR(@msg, 16, 1)
+	END CATCH
+END
+go
+
+--Procedimiento almacenado agrega producto
+CREATE PROCEDURE sp_insertProduct(
+	@Name NVARCHAR(100)='',
+	@Price MONEY =0
+)
+AS
+BEGIN
+	DECLARE
+		@msg VARCHAR(300) = ''
+	
+	BEGIN TRY
+	
+	INSERT INTO tbl_Product (Name, Price) VALUES (@Name,@Price);
+	SELECT 1 AS Result;
+
+	END TRY
+	BEGIN CATCH
+		IF(LEN(@msg) = 0)
+			BEGIN
+				SET @msg = (SELECT SUBSTRING(ERROR_MESSAGE(), 1, 300))
+			END
+		RAISERROR(@msg, 16, 1)
+	END CATCH
+END
+go
+
+--Procedimiento almacenado actualiza producto
+CREATE PROCEDURE sp_updateProduct(
+	@Id INT =0,
+	@Name NVARCHAR(100)='',
+	@Price MONEY =0
+)
+AS
+BEGIN
+	DECLARE
+		@msg VARCHAR(300) = ''
+	
+	BEGIN TRY
+	UPDATE tbl_Product SET Name=@Name, Price=@Price WHERE Id=@Id;
+	SELECT 1 AS Result;
+
+	END TRY
+	BEGIN CATCH
+		IF(LEN(@msg) = 0)
+			BEGIN
+				SET @msg = (SELECT SUBSTRING(ERROR_MESSAGE(), 1, 300))
+			END
+		RAISERROR(@msg, 16, 1)
+	END CATCH
+END
+go
+--Procedimiento almacenado elimina producto
+CREATE PROCEDURE sp_deleteProduct(
+	@Id INT =0
+)
+AS
+BEGIN
+	DECLARE
+		@msg VARCHAR(300) = ''
+	
+	BEGIN TRY
+	
+	DELETE FROM tbl_Product WHERE Id=@Id;
+	SELECT 1 AS Result;
+
+	END TRY
+	BEGIN CATCH
+		IF(LEN(@msg) = 0)
+			BEGIN
+				SET @msg = (SELECT SUBSTRING(ERROR_MESSAGE(), 1, 300))
+			END
+		RAISERROR(@msg, 16, 1)
+	END CATCH
+END
+go
+exec sp_insertProduct 'Durazno Chico',12.00;
+exec sp_updateProduct 15,'Durazno Grande',16.00;
+exec sp_deleteProduct 14
+exec sp_getProducts
+exec sp_getProduct 5
