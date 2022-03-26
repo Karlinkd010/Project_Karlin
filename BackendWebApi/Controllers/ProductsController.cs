@@ -15,15 +15,21 @@ namespace BackendWebApi.Controllers
         {
             _configuration = configuration;
             _productService = productService;   
-
         }
 
         [HttpGet]
         public List<Product> GetProducts()
         {
-            List<Product> products = new List<Product>();
+            var products = new List<Product>();
             products = _productService.getProducts().ToList();
             return products;
+        }
+        [HttpPut]
+        public IActionResult insertProducts(Product product)
+        {
+            string result = string.Empty;
+            result = _productService.insertProduct( product);
+            return Ok(result);
         }
     }
 }
