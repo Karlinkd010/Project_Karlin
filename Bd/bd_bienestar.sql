@@ -70,10 +70,16 @@ BEGIN
 		@msg VARCHAR(300) = ''
 	
 	BEGIN TRY
+	IF NOT EXISTS ( SELECT 1 FROM tbl_Product WHERE Name = @Name)
+	BEGIN
+		INSERT INTO tbl_Product (Name, Price) VALUES (@Name,@Price);
+		SELECT *FROM tbl_Product WHERE Name=@Name;
+	END
+	ELSE
+	BEGIN
+		SELECT 0 AS Result;
+	END
 	
-	INSERT INTO tbl_Product (Name, Price) VALUES (@Name,@Price);
-	SELECT 1 AS Result;
-
 	END TRY
 	BEGIN CATCH
 		IF(LEN(@msg) = 0)
@@ -83,6 +89,7 @@ BEGIN
 		RAISERROR(@msg, 16, 1)
 	END CATCH
 END
+
 go
 
 --Procedimiento almacenado actualiza producto
@@ -97,8 +104,16 @@ BEGIN
 		@msg VARCHAR(300) = ''
 	
 	BEGIN TRY
-	UPDATE tbl_Product SET Name=@Name, Price=@Price WHERE Id=@Id;
-	SELECT 1 AS Result;
+
+	IF EXISTS ( SELECT 1 FROM tbl_Product WHERE Id = @Id)
+	BEGIN
+		UPDATE tbl_Product SET Name=@Name, Price=@Price WHERE Id=@Id;
+		SELECT *FROM tbl_Product WHERE Id=@Id;
+	END
+	ELSE
+	BEGIN
+		SELECT 0 AS Result;
+	END
 
 	END TRY
 	BEGIN CATCH
@@ -120,9 +135,16 @@ BEGIN
 		@msg VARCHAR(300) = ''
 	
 	BEGIN TRY
-	
-	DELETE FROM tbl_Product WHERE Id=@Id;
-	SELECT 1 AS Result;
+
+	IF EXISTS ( SELECT 1 FROM tbl_Product WHERE Id = @Id)
+	BEGIN
+		DELETE FROM tbl_Product WHERE Id=@Id;
+		SELECT 1 AS Result;
+	END
+	ELSE
+	BEGIN
+		SELECT 0 AS Result;
+	END
 
 	END TRY
 	BEGIN CATCH
