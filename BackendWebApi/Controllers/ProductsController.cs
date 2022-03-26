@@ -25,11 +25,36 @@ namespace BackendWebApi.Controllers
             return products;
         }
         [HttpPut]
-        public IActionResult insertProducts(Product product)
+        public JsonResult insertProducts(Product product)
         {
-            string result = string.Empty;
-            result = _productService.insertProduct( product);
-            return Ok(result);
+            var Response = new Response();
+
+            if (product == null || product.Name.Equals(""))
+            {
+                return Json(new Response()
+                {
+                    Name = "Incorrecto",
+                    Mensaje = "datos vacios"
+                });
+
+            }
+            
+            Response = _productService.insertProduct( product);
+
+            if (Response.Mensaje != null && Response.Name != null)
+            {
+                return Json(new Response()
+                {
+                    Name =Response.Mensaje,
+                    Mensaje = "Registro "+ Response .Name+ " guardado correctamente"
+                });
+            }
+            return Json(new Response()
+            {
+                Name = "Incorrecto",
+                Mensaje = "Registro no guardado"
+            });
+
         }
     }
 }
