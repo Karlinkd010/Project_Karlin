@@ -5,6 +5,6 @@ namespace BackendWebApi.Interfaces
     public interface IProductService
     {
         public List<Product> getProducts();
-        public string insertProduct(Product prod);
+        public Response insertProduct(Product prod);
     }
 }
