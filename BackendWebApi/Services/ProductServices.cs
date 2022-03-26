@@ -28,6 +28,7 @@ namespace BackendWebApi.Services
 
         }
 
+        //listado de productos
         public List<Product> getProducts()
         {
             List < Product > products = new List< Product >();
@@ -49,7 +50,32 @@ namespace BackendWebApi.Services
             }  
         }
 
-     
+        public string insertProduct( Product prod)
+        {
+          string result = String.Empty;
+            try
+            {
+                using (IDbConnection db = Connection)
+                {
+                    db.Open();
+                    var product= db.Query<Product>("sp_insertProduct", new {Name= prod.Name, Price =prod.Price }, commandType: CommandType.StoredProcedure);
+                    if(product != null)
+                    {
+                        result = "1";
+                    }
+                    db.Close();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+                return error;
+            }
+        }
+
+
     }
     
 }
