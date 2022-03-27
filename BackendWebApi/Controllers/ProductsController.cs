@@ -16,7 +16,7 @@ namespace BackendWebApi.Controllers
             _configuration = configuration;
             _productService = productService;   
         }
-        //listado de productos
+        ///listado de productos
         [HttpGet]
         public JsonResult GetProducts()
         {
@@ -36,7 +36,7 @@ namespace BackendWebApi.Controllers
         }
 
             
-        //lista producto detalle
+        ///lista producto detalle
         [Route("{pid}")]
         [HttpGet]
         public JsonResult GetProduct(int pid)
@@ -64,7 +64,7 @@ namespace BackendWebApi.Controllers
 
             return Json(product);
         }
-        //inserta producto
+        ///inserta producto
         [HttpPost]
         public JsonResult insertProducts(Product product)
         {
@@ -97,7 +97,7 @@ namespace BackendWebApi.Controllers
             });
 
         }
-        //actualiza producto
+        ///actualiza producto
         [Route("{pid}")]
         [HttpPut]
         public JsonResult updatetProducts(Product product)
@@ -131,7 +131,7 @@ namespace BackendWebApi.Controllers
             });
 
         }
-        //elimina producto
+        ///elimina producto
         [Route("{pid}")]
         [HttpDelete]
         public JsonResult deleteProducts(int pid)
