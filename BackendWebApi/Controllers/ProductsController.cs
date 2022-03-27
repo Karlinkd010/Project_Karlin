@@ -16,7 +16,7 @@ namespace BackendWebApi.Controllers
             _configuration = configuration;
             _productService = productService;   
         }
-
+        //Get
         [HttpGet]
         public List<Product> GetProducts()
         {
@@ -24,6 +24,7 @@ namespace BackendWebApi.Controllers
             products = _productService.getProducts().ToList();
             return products;
         }
+        //Insert
         [HttpPut]
         public JsonResult insertProducts(Product product)
         {
@@ -47,6 +48,39 @@ namespace BackendWebApi.Controllers
                 {
                     Name =Response.Mensaje,
                     Mensaje = "Registro "+ Response .Name+ " guardado correctamente"
+                });
+            }
+            return Json(new Response()
+            {
+                Name = "Incorrecto",
+                Mensaje = "Registro no guardado"
+            });
+
+        }
+
+        [HttpPut]
+        public JsonResult updatetProducts(int id)
+        {
+            var Response = new Response();
+
+            if (id.Equals(""))
+            {
+                return Json(new Response()
+                {
+                    Name = "Incorrecto",
+                    Mensaje = "datos vacios"
+                });
+
+            }
+
+            Response = _productService.insertProduct(product);
+
+            if (Response.Mensaje != null && Response.Name != null)
+            {
+                return Json(new Response()
+                {
+                    Name = Response.Mensaje,
+                    Mensaje = "Registro " + Response.Name + " guardado correctamente"
                 });
             }
             return Json(new Response()
