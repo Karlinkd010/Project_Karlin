@@ -95,8 +95,12 @@ namespace BackendWebApi.Services
             }
             catch (Exception ex)
             {
-                string error = ex.Message;
-                return result;
+                
+                return new Response()
+                {                
+                    Name = "ERROR",
+                    Mensaje = ex.Message  
+                };
             }
         }
 
@@ -124,8 +128,11 @@ namespace BackendWebApi.Services
             }
             catch (Exception ex)
             {
-                string error = ex.Message;
-                return result;
+                return new Response()
+                {
+                    Name = "ERROR",
+                    Mensaje = ex.Message
+                };
             }
         }
 
@@ -152,8 +159,11 @@ namespace BackendWebApi.Services
             }
             catch (Exception ex)
             {
-                string error = ex.Message;
-                return result;
+                return new Response()
+                {
+                    Name = "ERROR",
+                    Mensaje = ex.Message
+                };
             }
         }
 
