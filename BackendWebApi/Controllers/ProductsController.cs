@@ -82,19 +82,8 @@ namespace BackendWebApi.Controllers
             
             Response = _productService.insertProduct( product);
 
-            if (Response.Mensaje != null && Response.Name != null)
-            {
-                return Json(new Response()
-                {
-                    Name =Response.Mensaje,
-                    Mensaje = "Registro "+ Response .Name+ " guardado correctamente"
-                });
-            }
-            return Json(new Response()
-            {
-                Name = "Incorrecto",
-                Mensaje = "Registro no guardado"
-            });
+            return Json(Response);
+            
 
         }
         ///actualiza producto
@@ -116,19 +105,7 @@ namespace BackendWebApi.Controllers
 
             Response = _productService.updateProduct(product);
 
-            if (Response.Mensaje != null && Response.Name != null)
-            {
-                return Json(new Response()
-                {
-                    Name = Response.Mensaje,
-                    Mensaje = "Registro " + Response.Name + " actualizado correctamente"
-                });
-            }
-            return Json(new Response()
-            {
-                Name = "Incorrecto",
-                Mensaje = "Registro no actualizado"
-            });
+            return Json(Response);
 
         }
         ///elimina producto
@@ -150,19 +127,7 @@ namespace BackendWebApi.Controllers
 
             Response = _productService.deleteProduct(pid);
 
-            if (Response.Mensaje!= null && Response.Mensaje.Equals("Correcto"))
-            {
-                return Json(new Response()
-                {
-                    Name = Response.Mensaje,
-                    Mensaje = "Registro eliminado correctamente"
-                });
-            }
-            return Json(new Response()
-            {
-                Name = "Incorrecto",
-                Mensaje = "Registro no eliminado"
-            });
+            return Json(Response);
 
         }
     }
