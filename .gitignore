@@ -29,6 +29,12 @@ build/
 *_p.c
 *.ilk
 *.meta
+**/logs
+**.logs
+**.vs
+**/obj
+**bin
+**.config
 *.obj
 *.pch
 *.pdb
