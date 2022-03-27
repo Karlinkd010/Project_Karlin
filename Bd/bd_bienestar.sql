@@ -75,10 +75,7 @@ BEGIN
 		INSERT INTO tbl_Product (Name, Price) VALUES (@Name,@Price);
 		SELECT *FROM tbl_Product WHERE Name=@Name;
 	END
-	ELSE
-	BEGIN
-		SELECT 0 AS Result;
-	END
+
 	
 	END TRY
 	BEGIN CATCH
@@ -110,10 +107,7 @@ BEGIN
 		UPDATE tbl_Product SET Name=@Name, Price=@Price, Modification= getdate() WHERE Id=@Id;
 		SELECT *FROM tbl_Product WHERE Id=@Id;
 	END
-	ELSE
-	BEGIN
-		SELECT 0 AS Result;
-	END
+	
 
 	END TRY
 	BEGIN CATCH
@@ -139,11 +133,11 @@ BEGIN
 	IF EXISTS ( SELECT 1 FROM tbl_Product WHERE Id = @Id)
 	BEGIN
 		DELETE FROM tbl_Product WHERE Id=@Id;
-		SELECT 1 AS Result;
+		SELECT 1 AS Mensaje;
 	END
 	ELSE
 	BEGIN
-		SELECT 0 AS Result;
+		SELECT 0 AS Mensaje;
 	END
 
 	END TRY
