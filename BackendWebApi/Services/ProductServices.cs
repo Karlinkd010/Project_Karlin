@@ -50,6 +50,27 @@ namespace BackendWebApi.Services
             }  
         }
 
+        public Product getProduct(int pid)
+        {
+            var products = new Product();
+            try
+            {
+                using (IDbConnection db = Connection)
+                {
+                    db.Open();
+                    products = db.Query<Product>("sp_getProduct", new { idProduct = pid }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    db.Close();
+
+                    return products;
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+                return products;
+            }
+        }
+
         public Response insertProduct( Product prod)
         {
             var result = new Response ();
@@ -94,6 +115,34 @@ namespace BackendWebApi.Services
                         {
                             Name = response.FirstOrDefault().Name,
                             Mensaje = "Correcto"
+                        };
+                    }
+                    db.Close();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+                return result;
+            }
+        }
+
+        public Response deleteProduct(int id)
+        {
+            var result = new Response();
+            try
+            {
+                using (IDbConnection db = Connection)
+                {
+                    db.Open();
+                    result = db.Query<Response>("sp_deleteProduct", new { Id = id}, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                    if ( result.Mensaje!=null && result.Mensaje.Equals("1") )
+                    {
+                        result = new Response()
+                        {
+                           Mensaje="Correcto"
                         };
                     }
                     db.Close();
