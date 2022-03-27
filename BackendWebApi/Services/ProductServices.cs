@@ -79,6 +79,35 @@ namespace BackendWebApi.Services
             }
         }
 
+        public Response updateProduct(Product prod)
+        {
+            var result = new Response();
+            try
+            {
+                using (IDbConnection db = Connection)
+                {
+                    db.Open();
+                    var response = db.Query<Product>("sp_updateProduct", new { Id=prod.Id, Name= prod.Name, Price= prod.Price }, commandType: CommandType.StoredProcedure).ToList();
+                    if (response.FirstOrDefault().Id != null && response.FirstOrDefault().Name != null)
+                    {
+                        result = new Response()
+                        {
+                            Name = response.FirstOrDefault().Name,
+                            Mensaje = "Correcto"
+                        };
+                    }
+                    db.Close();
+
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                string error = ex.Message;
+                return result;
+            }
+        }
+
 
     }
     
