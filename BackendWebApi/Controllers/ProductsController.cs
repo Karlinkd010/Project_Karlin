@@ -25,12 +25,16 @@ namespace BackendWebApi.Controllers
             return products;
         }
         //Insert
-        [HttpPut]
+        [HttpPost]
         public JsonResult insertProducts(Product product)
         {
             var Response = new Response();
+            //if (ModelState.IsValid)
+            //{
+            //    return 
+            //}
 
-            if (product == null || product.Name.Equals(""))
+            if (product.Name.Equals(""))
             {
                 return Json(new Response()
                 {
@@ -59,11 +63,11 @@ namespace BackendWebApi.Controllers
         }
 
         [HttpPut]
-        public JsonResult updatetProducts(int id)
+        public JsonResult updatetProducts(Product product)
         {
             var Response = new Response();
 
-            if (id.Equals(""))
+            if (product.Id.Equals("") && product.Name.Equals("") && product.Price.Equals("") )
             {
                 return Json(new Response()
                 {
@@ -73,20 +77,20 @@ namespace BackendWebApi.Controllers
 
             }
 
-            Response = _productService.insertProduct(product);
+            Response = _productService.updateProduct(product);
 
             if (Response.Mensaje != null && Response.Name != null)
             {
                 return Json(new Response()
                 {
                     Name = Response.Mensaje,
-                    Mensaje = "Registro " + Response.Name + " guardado correctamente"
+                    Mensaje = "Registro " + Response.Name + " actualizado correctamente"
                 });
             }
             return Json(new Response()
             {
                 Name = "Incorrecto",
-                Mensaje = "Registro no guardado"
+                Mensaje = "Registro no actualizado"
             });
 
         }
