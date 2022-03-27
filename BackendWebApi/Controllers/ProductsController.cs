@@ -16,30 +16,66 @@ namespace BackendWebApi.Controllers
             _configuration = configuration;
             _productService = productService;   
         }
-        //Get
+        //listado de productos
         [HttpGet]
-        public List<Product> GetProducts()
+        public JsonResult GetProducts()
         {
             var products = new List<Product>();
             products = _productService.getProducts().ToList();
-            return products;
+            
+            if(products == null)
+            {
+                return Json(new Response()
+                {
+                    Name = "Incorrecto",
+                    Mensaje = "Datos vacios"
+                });
+            }
+
+            return Json(products);
         }
-        //Insert
+
+            
+        //lista producto detalle
+        [Route("{pid}")]
+        [HttpGet]
+        public JsonResult GetProduct(int pid)
+        {
+            var product = new Product();
+
+            if (pid.Equals(""))
+            {
+                return Json(new Response()
+                {
+                    Name = "Incorrecto",
+                    Mensaje = "Id vacio"
+                });
+
+            }
+            product = _productService.getProduct(pid);
+            if (product == null)
+            {
+                return Json(new Response()
+                {
+                    Name = "Incorrecto",
+                    Mensaje = "Datos vacios"
+                });
+            }
+
+            return Json(product);
+        }
+        //inserta producto
         [HttpPost]
         public JsonResult insertProducts(Product product)
         {
             var Response = new Response();
-            //if (ModelState.IsValid)
-            //{
-            //    return 
-            //}
 
             if (product.Name.Equals(""))
             {
                 return Json(new Response()
                 {
                     Name = "Incorrecto",
-                    Mensaje = "datos vacios"
+                    Mensaje = "Datos vacios"
                 });
 
             }
@@ -61,7 +97,8 @@ namespace BackendWebApi.Controllers
             });
 
         }
-
+        //actualiza producto
+        [Route("{pid}")]
         [HttpPut]
         public JsonResult updatetProducts(Product product)
         {
@@ -91,6 +128,40 @@ namespace BackendWebApi.Controllers
             {
                 Name = "Incorrecto",
                 Mensaje = "Registro no actualizado"
+            });
+
+        }
+        //elimina producto
+        [Route("{pid}")]
+        [HttpDelete]
+        public JsonResult deleteProducts(int pid)
+        {
+            var Response = new Response();
+
+            if (pid.Equals(""))
+            {
+                return Json(new Response()
+                {
+                    Name = "Incorrecto",
+                    Mensaje = "datos vacios"
+                });
+
+            }
+
+            Response = _productService.deleteProduct(pid);
+
+            if (Response.Mensaje!= null && Response.Mensaje.Equals("Correcto"))
+            {
+                return Json(new Response()
+                {
+                    Name = Response.Mensaje,
+                    Mensaje = "Registro eliminado correctamente"
+                });
+            }
+            return Json(new Response()
+            {
+                Name = "Incorrecto",
+                Mensaje = "Registro no eliminado"
             });
 
         }
