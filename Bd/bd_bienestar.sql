@@ -107,7 +107,7 @@ BEGIN
 
 	IF EXISTS ( SELECT 1 FROM tbl_Product WHERE Id = @Id)
 	BEGIN
-		UPDATE tbl_Product SET Name=@Name, Price=@Price WHERE Id=@Id;
+		UPDATE tbl_Product SET Name=@Name, Price=@Price, Modification= getdate() WHERE Id=@Id;
 		SELECT *FROM tbl_Product WHERE Id=@Id;
 	END
 	ELSE
