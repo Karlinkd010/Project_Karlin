@@ -6,6 +6,6 @@ namespace BackendWebApi.Interfaces
     {
         public List<Product> getProducts();
         public Response insertProduct(Product prod);
-        public Response updateProduct(int id);
+        public Response updateProduct(Product prod);
     }
 }
