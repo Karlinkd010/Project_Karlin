@@ -75,6 +75,9 @@ BEGIN
 		INSERT INTO tbl_Product (Name, Price) VALUES (@Name,@Price);
 		SELECT *FROM tbl_Product WHERE Name=@Name;
 	END
+	BEGIN
+	SELECT 0 AS Id;
+	END 
 
 	
 	END TRY
@@ -107,6 +110,9 @@ BEGIN
 		UPDATE tbl_Product SET Name=@Name, Price=@Price, Modification= getdate() WHERE Id=@Id;
 		SELECT *FROM tbl_Product WHERE Id=@Id;
 	END
+	BEGIN
+	SELECT 0 AS Id;
+	END 
 	
 
 	END TRY
