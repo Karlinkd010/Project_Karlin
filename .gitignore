@@ -29,7 +29,10 @@ build/
 *_p.c
 *.ilk
 *.meta
-**/logs
+*BackendWebApi/.vs
+*BackendWebApi/.config
+*BackendWebApi/bin
+*BackendWebApi/obj
 **.logs
 **.vs
 **/obj
