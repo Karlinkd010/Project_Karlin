@@ -74,20 +74,41 @@ namespace BackendWebApi.Services
         public Response insertProduct( Product prod)
         {
             var result = new Response ();
+            var response = new Product();
             try
             {
                 using (IDbConnection db = Connection)
                 {
                     db.Open();
-                    var response= db.Query<Product>("sp_insertProduct", new {Name= prod.Name, Price =prod.Price }, commandType: CommandType.StoredProcedure).ToList();
-                    if (response.FirstOrDefault().Id !=null && response.FirstOrDefault().Name != null)
+                    response = db.Query<Product>("sp_insertProduct", new { Name = prod.Name, Price = prod.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+
+                    if (response == null)
                     {
-                        result = new Response()
+                        return result = new Response()
                         {
-                            Name = response.FirstOrDefault().Name,
-                            Mensaje = "Correcto"
+                            Name = "Incorrecto",
+                            Mensaje = "Registro no se pudo guardar correctamente"
+                        };
+
+                    }
+                    if (response.Id == 0)
+                    {
+                        return result = new Response()
+                        {
+                            Name = "Error al guardar",
+                            Mensaje = "Registro " + prod.Name + " ya existe en el base de datos!"
                         };
                     }
+                    if (response.Name !=null && response.Creation != null)
+                    {
+                        return result = new Response()
+                        {
+                            Name = "Correcto",
+                            Mensaje = "Registro " + response.Name + " guardado correctamente" 
+                        };
+                    }
+                    
+
                     db.Close();
 
                     return result;
@@ -98,7 +119,7 @@ namespace BackendWebApi.Services
                 
                 return new Response()
                 {                
-                    Name = "ERROR",
+                    Name = "Error",
                     Mensaje = ex.Message  
                 };
             }
@@ -107,18 +128,37 @@ namespace BackendWebApi.Services
         public Response updateProduct(Product prod)
         {
             var result = new Response();
+            var response = new Product();
             try
             {
                 using (IDbConnection db = Connection)
                 {
                     db.Open();
-                    var response = db.Query<Product>("sp_updateProduct", new { Id=prod.Id, Name= prod.Name, Price= prod.Price }, commandType: CommandType.StoredProcedure).ToList();
-                    if (response.FirstOrDefault().Id != null && response.FirstOrDefault().Name != null)
+                    response = db.Query<Product>("sp_updateProduct", new { Id=prod.Id, Name= prod.Name, Price= prod.Price }, commandType: CommandType.StoredProcedure).FirstOrDefault();
+                   
+                    if (response == null)
                     {
-                        result = new Response()
+                        return result = new Response()
                         {
-                            Name = response.FirstOrDefault().Name,
-                            Mensaje = "Correcto"
+                            Name = "Incorrecto",
+                            Mensaje = "Registro no se pudo editar correctamente"
+                        };
+
+                    }
+                    if (response.Id == 0)
+                    {
+                        return result = new Response()
+                        {
+                            Name = "Error al editar",
+                            Mensaje = "Registro " + prod.Name + " no existe en el base de datos!"
+                        };
+                    }
+                    if (response.Name != null && response.Modification != null)
+                    {
+                        return result = new Response()
+                        {
+                            Name = "Correcto",
+                            Mensaje = "Registro " + response.Name + " axtualizado correctamente"
                         };
                     }
                     db.Close();
@@ -130,7 +170,7 @@ namespace BackendWebApi.Services
             {
                 return new Response()
                 {
-                    Name = "ERROR",
+                    Name = "Error",
                     Mensaje = ex.Message
                 };
             }
@@ -145,12 +185,24 @@ namespace BackendWebApi.Services
                 {
                     db.Open();
                     result = db.Query<Response>("sp_deleteProduct", new { Id = id}, commandType: CommandType.StoredProcedure).FirstOrDefault();
-                    if ( result.Mensaje!=null && result.Mensaje.Equals("1") )
+
+
+                    if (result.Mensaje.Equals("1"))
                     {
-                        result = new Response()
+                        return result = new Response()
                         {
-                           Mensaje="Correcto"
+                            Name = "Correcto",
+                            Mensaje = "Registro eliminado correctamente"
                         };
+                    }
+                    if (result.Mensaje.Equals("0"))
+                    {
+                        return result = new Response()
+                        {
+                            Name = "Incorrecto",
+                            Mensaje = "No se pudo encontrar un registro con el ID " + id
+                        };
+
                     }
                     db.Close();
 
@@ -161,7 +213,7 @@ namespace BackendWebApi.Services
             {
                 return new Response()
                 {
-                    Name = "ERROR",
+                    Name = "Error",
                     Mensaje = ex.Message
                 };
             }
