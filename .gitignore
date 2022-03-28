@@ -2,3 +2,17 @@ BackendWebApi/.vs/*
 BackendWebApi/.config/*
 BackendWebApi/bin/*
 BackendWebApi/obj/*
+BackendWebApi/Properties/*
+
+FrontendMovil/.vs/*
+FrontendMovil/FrontendMovil/bin/*
+FrontendMovil/FrontendMovil/obj/*
+
+FrontendMovil/FrontendMovil/FrontendMovil/obj/*
+FrontendMovil/FrontendMovil/FrontendMovil/bin/*
+
+FrontendMovil/FrontendMovil/FrontendMovil.Android/obj/*
+FrontendMovil/FrontendMovil/FrontendMovil.Android/bin/*
+
+FrontendMovil/FrontendMovil/FrontendMovil.iOS/obj/*
+FrontendMovil/FrontendMovil/FrontendMovil.iOS/bin/*
