@@ -9,21 +9,21 @@ namespace BackendWebApi.Controllers
     public class ProductsController : Controller
     {
         private readonly IConfiguration _configuration;
-        private readonly IProductService _productService;
+        private readonly IProductService _productInterface;
 
         public ProductsController(IConfiguration configuration, IProductService productService)
         {
             _configuration = configuration;
-            _productService = productService;   
+            _productInterface = productService;
         }
         ///listado de productos
         [HttpGet]
         public JsonResult GetProducts()
         {
             var products = new List<Product>();
-            products = _productService.getProducts().ToList();
-            
-            if(products == null)
+            products = _productInterface.getProducts().ToList();
+
+            if (products == null)
             {
                 return Json(new Response()
                 {
@@ -52,7 +52,7 @@ namespace BackendWebApi.Controllers
                 });
 
             }
-            product = _productService.getProduct(pid);
+            product = _productInterface.getProduct(pid);
             if (product == null)
             {
                 return Json(new Response()
@@ -80,7 +80,7 @@ namespace BackendWebApi.Controllers
 
             }
             
-            Response = _productService.insertProduct( product);
+            Response = _productInterface.insertProduct( product);
 
             return Json(Response);
             
@@ -93,17 +93,17 @@ namespace BackendWebApi.Controllers
         {
             var Response = new Response();
 
-            if (product.Id.Equals("") && product.Name.Equals("") && product.Price.Equals("") )
+            if (product.Id == null || product.Name.Equals("") )
             {
                 return Json(new Response()
                 {
                     Name = "Incorrecto",
-                    Mensaje = "datos vacios"
+                    Mensaje = "Datos vacios"
                 });
 
             }
 
-            Response = _productService.updateProduct(product);
+            Response = _productInterface.updateProduct(product);
 
             return Json(Response);
 
@@ -120,12 +120,12 @@ namespace BackendWebApi.Controllers
                 return Json(new Response()
                 {
                     Name = "Incorrecto",
-                    Mensaje = "datos vacios"
+                    Mensaje = "Datos vacios"
                 });
 
             }
 
-            Response = _productService.deleteProduct(pid);
+            Response = _productInterface.deleteProduct(pid);
 
             return Json(Response);
 
