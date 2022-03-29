@@ -150,7 +150,7 @@ namespace BackendWebApi.Services
                         return result = new Response()
                         {
                             Name = "Error al editar",
-                            Mensaje = "Registro " + prod.Name + " no existe en el base de datos!"
+                            Mensaje = "No se pudo encontrar un registro con el ID: " + prod.Id
                         };
                     }
                     if (response.Name != null && response.Modification != null)
@@ -158,7 +158,7 @@ namespace BackendWebApi.Services
                         return result = new Response()
                         {
                             Name = "Correcto",
-                            Mensaje = "Registro " + response.Name + " axtualizado correctamente"
+                            Mensaje = "Registro " + response.Name + " actualizado correctamente"
                         };
                     }
                     db.Close();
@@ -200,7 +200,7 @@ namespace BackendWebApi.Services
                         return result = new Response()
                         {
                             Name = "Incorrecto",
-                            Mensaje = "No se pudo encontrar un registro con el ID " + id
+                            Mensaje = "No se pudo encontrar un registro con el ID: " + id
                         };
 
                     }
